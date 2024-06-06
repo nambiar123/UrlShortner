@@ -124,29 +124,8 @@
         $('#shortUrl').click(async function (e) {
             e.preventDefault();
             var shortCode = this.dataset.shortUrl;
-            var ipadress = await getIPAddress();
-            var browser = window.navigator.userAgent;
 
-            fetch(`Url/getlongurl`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ shortUrl: shortCode, ipadress: ipadress, browser: browser })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.Data.url.LongUrl) {
-                        window.location.href = data.Data.url.LongUrl;
-                    } else {
-                        alert('Error: ' + (data.error || 'Unknown error'));
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching long URL:', error);
-                    // Handle error condition
-                });
-               
+            redirect(shortCode);
         })
 
 
@@ -180,6 +159,32 @@
         }
 
         getData();
+
+
+        async function redirect(shortCode) {
+            var ipadress = await getIPAddress();
+            var browser = window.navigator.userAgent;
+
+            fetch(`Url/getlongurl`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ shortUrl: shortCode, ipadress: ipadress, browser: browser })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.Data.url.LongUrl) {
+                        window.location.href = data.Data.url.LongUrl;
+                    } else {
+                        alert('Error: ' + (data.error || 'Unknown error'));
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching long URL:', error);
+                    // Handle error condition
+                });
+        }
     });
 
     async function getIPAddress() {

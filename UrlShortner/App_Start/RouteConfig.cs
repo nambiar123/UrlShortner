@@ -41,8 +41,8 @@ namespace UrlShortner
 
             routes.MapRoute(
                 name: "Default",
-                url: "/",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                url: "{controller}/{action}/{id}",
+                defaults: new { controller = "UrlShortner", action = "Index", id = UrlParameter.Optional }
             );
         }
     }
